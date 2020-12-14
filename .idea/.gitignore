@@ -1,0 +1,8 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../../:\Users\andreykoz\iCloudDrive\Python\Vadim Lessons\Pycharm\DeepLearning\YandexGPU\OCR Keras Jetson\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

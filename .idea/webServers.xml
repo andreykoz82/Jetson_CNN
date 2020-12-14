@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2ccdc919-7714-4769-bdaf-17c2b5c8b575" name="OCR Keras Jetson">
+        <fileTransfer rootFolder="/home/andrey" accessType="SFTP" host="192.168.55.1" port="22" sshConfigId="31bda862-5d32-4901-bb6d-56a21fe0e867" sshConfig="Jetson nano" />
+      </webServer>
+    </option>
+  </component>
+</project>

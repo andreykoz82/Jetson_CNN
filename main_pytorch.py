@@ -54,7 +54,6 @@ def main():
             canny = cv2.Canny(image, 0, 255, 1)
 
             cnts, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            #cnts = cnts[0] if len(cnts) == 2 else cnts[1]
             cnts = sorted(cnts, key=lambda ctr: cv2.boundingRect(ctr)[1])
 
 
@@ -64,7 +63,6 @@ def main():
 
             plt.imshow(np.array(image))
             plt.show()
-
 
             for c in cnts:
                 area = cv2.contourArea(c)
@@ -80,12 +78,21 @@ def main():
 
                     data.append(class_names[preds])
 
-                    plt.imshow(np.array(image))
-                    plt.title(class_names[preds])
-                    plt.show()
+                    # plt.imshow(np.array(image))
+                    # plt.title(class_names[preds])
+                    # plt.show()
+
+            data = ''.join([str(elem) for elem in data])
+            gtin = data[::-1][-14:]
+            sn = data[::-1][-27: -14]
+            batch = data[::-1][-33: -27]
+            expired = data[::-1].replace(gtin, "").replace(sn, "").replace(batch, "")
 
             print(f"Process finished for {round(time.time() - start_time, 2)} sec.")
-            print(f"Found DATA: {''.join([str(elem) for elem in data])}")
+            print(f"Found GTIN: {gtin}")
+            print(f"Found SN: {sn}")
+            print(f"Found BATCH: {batch}")
+            print(f"Found EXP: {expired}")
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

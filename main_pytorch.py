@@ -13,7 +13,7 @@ mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
 data_transforms = {
-    'val': transforms.Compose([
+    'test': transforms.Compose([
         transforms.ToPILImage(),
         transforms.Resize((64, 64)),
         transforms.ToTensor(),
@@ -70,7 +70,7 @@ def main():
                     x, y, w, h = cv2.boundingRect(c)
                     cv2.rectangle(image, (x, y), (x + w, y + h), (36, 255, 12), 2)
                     ROI = image[y:y + h, x:x + w]
-                    img_array = data_transforms['val'](ROI)
+                    img_array = data_transforms['test'](ROI)
                     img_array = img_array.view(1, 3, 64, 64)
 
                     outputs = model(img_array)
@@ -87,6 +87,9 @@ def main():
             sn = data[::-1][-27: -14]
             batch = data[::-1][-33: -27]
             expired = data[::-1].replace(gtin, "").replace(sn, "").replace(batch, "")
+            character = sn[2]
+            sn = sn.replace(character, "")
+            sn = character + sn
 
             print(f"Process finished for {round(time.time() - start_time, 2)} sec.")
             print(f"Found GTIN: {gtin}")

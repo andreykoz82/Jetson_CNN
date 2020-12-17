@@ -63,7 +63,7 @@ class ConvNet(pl.LightningModule):
             nn.ReLU(),
         )
         self.drop_out = nn.Dropout(0.2)
-        self.output = nn.Linear(128, 34)
+        self.output = nn.Linear(128, 36)
 
     def forward(self, x):
         out = self.block_1(x)
@@ -94,7 +94,7 @@ class ConvNet(pl.LightningModule):
 
 model = ConvNet()
 
-trainer = pl.Trainer(gpus=-1, max_epochs=20, progress_bar_refresh_rate=20)
+trainer = pl.Trainer(gpus=0, max_epochs=20, progress_bar_refresh_rate=20)
 trainer.fit(model, dataloaders['train'], dataloaders['val'])
 
 # %%

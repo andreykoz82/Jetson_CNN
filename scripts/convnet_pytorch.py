@@ -22,7 +22,7 @@ class ConvNet(pl.LightningModule):
             nn.ReLU(),
         )
         self.drop_out = nn.Dropout(0.2)
-        self.output = nn.Linear(128, 34)
+        self.output = nn.Linear(128, 36)
 
     def forward(self, x):
         out = self.block_1(x)

@@ -4,9 +4,9 @@ import RPi.GPIO as GPIO
 import matplotlib.pyplot as plt
 from scripts.preprocess import preprocess
 from torchvision import transforms
-from time import time
 import torch
 from scripts.convnet_pytorch import ConvNet
+import time
 
 
 mean = [0.485, 0.456, 0.406]
@@ -48,25 +48,23 @@ def main():
             GPIO.output(outputPin, 0)  # Led signal off
 
         if ret and x == 0:  # If button pressed
-            start_time = time()
+            start_time = time.time()
             GPIO.output(outputPin, 1)  # Led signal on
             image = preprocess(frame)
             canny = cv2.Canny(image, 0, 255, 1)
 
-            cnts = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+            cnts, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            #cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+            cnts = sorted(cnts, key=lambda ctr: cv2.boundingRect(ctr)[1])
 
-            cnts = sorted(cnts, key=lambda ctr: cv2.boundingRect(ctr)[0])
 
-            min_area = 400
-            gtin = []
-            sn = []
+
+            min_area = 5
+            data = []
 
             plt.imshow(np.array(image))
             plt.show()
 
-            idx_gtin = [0, 3, 5, 7, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26]
-            idx = 0
 
             for c in cnts:
                 area = cv2.contourArea(c)
@@ -80,23 +78,17 @@ def main():
                     outputs = model(img_array)
                     _, preds = torch.max(outputs, 1)
 
-                    if idx in idx_gtin:
-                        gtin.append(class_names[preds])
-                    else:
-                        sn.append(class_names[preds])
-                    idx += 1
+                    data.append(class_names[preds])
 
-                    # plt.imshow(np.array(image))
-                    # plt.title(class_names[preds])
-                    # plt.show()
+                    plt.imshow(np.array(image))
+                    plt.title(class_names[preds])
+                    plt.show()
 
-            print(f"Process finished for {round(time() - start_time, 2)} sec.")
-            print(f"Found GTIN: {''.join([str(elem) for elem in gtin])}")
-            print(f"Found SN: {''.join([str(elem) for elem in sn])}")
+            print(f"Process finished for {round(time.time() - start_time, 2)} sec.")
+            print(f"Found DATA: {''.join([str(elem) for elem in data])}")
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
     camera.release()
 
 if __name__ == '__main__':

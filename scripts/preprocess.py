@@ -39,10 +39,14 @@ def automatic_brightness_and_contrast(image, clip_hist_percent=25):
 
 
 def preprocess(image):
-    image = image[240:580, 400:1150]
+    image = image[270:720, 415:1200]
+    image = cv2.rectangle(image, (50, 340), (320, 440), (100, 100, 50), -1)
     image, alpha, beta = automatic_brightness_and_contrast(image)
     norm_img = np.zeros((image.shape[0], image.shape[1]))
     image = cv2.normalize(image, norm_img, 0, 255, cv2.NORM_MINMAX)
     image = cv2.threshold(image, 190, 255, cv2.THRESH_BINARY)[1]
     image = cv2.medianBlur(image, ksize=7)
+    kernel = np.ones((2, 2), np.uint8)  # the bigger kernel the thinner line
+    image = cv2.erode(image, kernel, iterations=1)  # make thinner
+
     return image

@@ -65,7 +65,6 @@ def transform_image(image):
     Предобработка изображения
     """
     image, alpha, beta = automatic_brightness_and_contrast(image)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     norm_img = np.zeros((image.shape[0], image.shape[1]))
     image = cv2.normalize(image, norm_img, 0, 255, cv2.NORM_MINMAX)
     image = cv2.threshold(image, 190, 255, cv2.THRESH_BINARY)[1]
@@ -81,7 +80,7 @@ def preprocess(image):
     """
     image_gtin = transform_image(image[530:620, 430:1150])
     image_sn = transform_image(image[620:720, 430:1150])
-    image_batch = transform_image(image[730:810, 380:750])
+    image_batch = transform_image(image[720:805, 380:750])
     return image_gtin, image_sn, image_batch
 
 

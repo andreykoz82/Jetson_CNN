@@ -36,9 +36,9 @@ if __name__ == '__main__':
             sn = extract_text(image_sn, model)
             batch = extract_text(image_batch, model)
 
-            gtin_true = ''
-            sn_true = ''
-            batch_true = ''
+            gtin_true = '4601498005421'
+            sn_true = '8Z685X630W0T'
+            batch_true = '161220'
 
             print(f"Process finished for {round(time.time() - start_time, 2)} sec.")
             print(f"Found GTIN: {gtin}, result: {gtin_true == gtin}")
